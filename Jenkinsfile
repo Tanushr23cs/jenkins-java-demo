@@ -4,26 +4,23 @@ pipeline {
 
     stages {
 
-        stage('Clone') {
-
+        stage('Docker Build') {
             steps {
-                git branch: 'main',
-                url: 'https://github.com/Tanushr23cs/jenkins-java-demo.git'
+                sh 'docker build -t hello-docker1 .'
             }
         }
 
-        stage('Docker Build') {
-
+        stage('Remove Old Container') {
             steps {
-                sh 'docker build -t hello-docker .'
+                sh 'docker rm -f hello-container || true'
             }
         }
 
         stage('Run Container') {
-
             steps {
-                sh 'docker run --name hello-container hello-docker'
+                sh 'docker run --name hello-container hello-docker1'
             }
         }
+
     }
 }
